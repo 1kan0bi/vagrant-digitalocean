@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    droplet: "{{ lookup('file', '~/vagrant/.vagrant/machines/droplet1/digital_ocean/id') }}"
+    token: " " #DO token
+  tasks:
+
+    - name: Create new Block Storage
+      community.digitalocean.digital_ocean_block_storage:
+        state: present
+        command: create
+        api_token: "{{ token }}"
+        region: nyc1
+        block_size: 100
+        volume_name: nyc1-block-storage
+        
+    - name: Attach Block Storage to a Droplet
+      community.digitalocean.digital_ocean_block_storage:
+        state: present
+        command: attach
+        api_token: "{{ token }}"
+        volume_name: nyc1-block-storage
+        region: nyc1
+        droplet_id: "{{ droplet }}"

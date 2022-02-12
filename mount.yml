@@ -1,0 +1,14 @@
+---
+-  hosts: droplet1
+   remote_user: root
+   become: yes
+   tasks:
+
+    - name: Create a mount directory
+      file:
+        path: /srv/data
+        state: directory
+        mode: '0755'
+
+    - name: Mount /dev/sda to /srv/data
+      script: mount.sh
